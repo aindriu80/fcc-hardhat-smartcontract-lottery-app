@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/media/Feidhmchláir/Courses/FreeCodeCamp/fcc-hardhat-smartcontract-lottery-app/contracts/Raffle.sol": {
-      "lastModificationDate": 1663677398411,
-      "contentHash": "6bb441f004b283fa3fe6bf1de89fd62e",
+      "lastModificationDate": 1663678418113,
+      "contentHash": "dc5fa9454d111b8b694cd2fab0e5ed9b",
       "sourceName": "contracts/Raffle.sol",
       "solcConfig": {
         "version": "0.8.17",
