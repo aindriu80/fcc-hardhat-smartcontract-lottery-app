@@ -9,11 +9,12 @@
 pragma solidity ^0.8.7;
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
+import '@chainlink/contracts/src/0.8/interfaces/KeeperCompatibleInterface.sol';
 
 error Raffle__NotEnoughETHEntered();
 error Raffle_TransferredFailed();
 
-contract Raffle is VRFConsumerBaseV2 {
+contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     // State Variable
     uint256 private immutable i_entranceFee;
     address payable[] private s_players;
@@ -57,6 +58,20 @@ contract Raffle is VRFConsumerBaseV2 {
         emit RaffleEnter(msg.sender);
     }
 
+    /**
+     * @dev This is the function that hte Chainlink Keeper nodes all
+     * they look for the 'upkeepNeeded' to return true.
+     * The following should be true in order to be true.
+     * 1. Our time interval should have passed
+     * 2. Lottery should have at least one player and have some ETH
+     * 3. Our subscription is funded with LINK
+     * 4. The lootery should be in an "open" state.
+     */
+
+    function checkUpkeep(
+        bytes calldata /*checkData*/
+    ) external override {}
+
     function requestRandomWinner() external {
         // Request the random number
         // Once we get it, do something with it
@@ -71,7 +86,10 @@ contract Raffle is VRFConsumerBaseV2 {
         emit RequestedRaffleWinner(requestId);
     }
 
-    function fulfillRandomWords(uint256 /*requestId*/, uint256[] memory randomWords) internal override {
+    function fulfillRandomWords(
+        uint256, /*requestId*/
+        uint256[] memory randomWords
+    ) internal override {
         // s_players size 10
         // randomNumber 202
         // 202 % 10 ? what doesn't divide evenly into 202?
