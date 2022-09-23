@@ -9,12 +9,18 @@
 pragma solidity ^0.8.7;
 import '@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol';
 import '@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol';
-import '@chainlink/contracts/src/0.8/interfaces/KeeperCompatibleInterface.sol';
+import '@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol';
 
 error Raffle__NotEnoughETHEntered();
 error Raffle_TransferredFailed();
+error Raffle__NotOpen();
 
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
+    // Type definitions
+    enum RaffleState{
+        OPEN,
+        CALCULATE,
+    }
     // State Variable
     uint256 private immutable i_entranceFee;
     address payable[] private s_players;
@@ -27,6 +33,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     // Lottery Variables
     address private s_recentWinner;
+    RaffleState private s_raffleState
 
     // Events
     event RaffleEnter(address indexed player);
@@ -45,12 +52,16 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
         i_callbackGasLimit = callbackGasLimit;
+        s_raffleState = RaffleState.OPEN;
     }
 
     function enterRaffle() public payable {
         // require msg.value > i_entranceFee, "Not enough ETH!"
         if (msg.value < i_entranceFee) {
             revert Raffle__NotEnoughETHEntered();
+        }
+        if(s_raffleState != RaffleState.OPEN){
+            revert Raffle__NotOpen;
         }
         s_players.push(payable(msg.sender));
         // Emit an event when we update a dynamic array or mapping
@@ -76,6 +87,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         // Request the random number
         // Once we get it, do something with it
         // 2 transaction process
+        s_raffleState = RaffleState.CALCULATING;
+        s_raffleState = RaffleState.OPEN;
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane, //gasLane
             i_subscriptionId,
