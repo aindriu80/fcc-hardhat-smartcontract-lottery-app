@@ -174,8 +174,8 @@
       ]
     },
     "/home/aindriu/Cáipéisí/Programming/projects/FreeCodeCamp/fcc-hardhat-smartcontract-lottery-app/contracts/test/VRFCoordinatorV2Mock.sol": {
-      "lastModificationDate": 1664285770517,
-      "contentHash": "50f859eff3fc2612029fd410b9cfa48d",
+      "lastModificationDate": 1664286532735,
+      "contentHash": "22bc41bedd8bfa4a6e4bba0790bd51fd",
       "sourceName": "contracts/test/VRFCoordinatorV2Mock.sol",
       "solcConfig": {
         "version": "0.8.17",
