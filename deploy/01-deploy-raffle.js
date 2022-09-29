@@ -24,21 +24,39 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     subscriptionId = networkConfig[chainId]['subscriptionId']
   }
 
-  const entranceFee = networkConfig[chainId]['entranceFee']
-  const gasLane = networkConfig[chainId]['gasLane']
-  const callbackGasLimit = networkConfig[chainId]['callbackGasLimit']
-  const interval = networkConfig[chainId]['interval']
+  // const entranceFee = networkConfig[chainId]['entranceFee']
+  // const gasLane = networkConfig[chainId]['gasLane']
+  // const callbackGasLimit = networkConfig[chainId]['callbackGasLimit']
+  // const interval = networkConfig[chainId]['interval']
 
-  const args = [vrfCoordinatorV2Address, entranceFee, gasLane, callbackGasLimit, interval]
+  // const args = [vrfCoordinatorV2Address, entranceFee, gasLane, callbackGasLimit, interval]
+
+  const waitBlockConfirmations = developmentChains.includes(network.name)
+    ? 1
+    : VERIFICATION_BLOCK_CONFIRMATIONS
+
+  log('----------------------------------------------------')
+
+  const arguments = [
+    vrfCoordinatorV2Address,
+    subscriptionId,
+    networkConfig[chainId]['gasLane'],
+    networkConfig[chainId]['keepersUpdateInterval'],
+    networkConfig[chainId]['raffleEntranceFee'],
+    networkConfig[chainId]['callbackGasLimit'],
+  ]
   const raffle = await deploy('Raffle', {
     from: deployer,
-    args: [],
+    args: arguments,
     log: true,
-    waitConfirmations: network.config.blockConfirmations || 1,
+    // waitConfirmations: network.config.blockConfirmations || 1,
+    waitConfirmations: waitBlockConfirmations,
   })
+  // Verify the deployment
+  console.log('verifiying the deployment', process.env.ETHERSCAN_API_KEY)
   if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
     log('Verifying....')
-    await verify(raffle.address, args)
+    await verify(raffle.address, arguments)
   }
   log('------------------------------------------------------------------------------')
 }
