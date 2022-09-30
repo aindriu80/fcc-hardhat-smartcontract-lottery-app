@@ -1,8 +1,9 @@
 const { network, ethers } = require('hardhat')
 const { developmentChains, networkConfig } = require('../helper-hardhat-config')
-const { verify } = require('../helper-hardhat-config')
+const { verify } = require('../utils/verify')
 
-const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther('29')
+// const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther('29')
+const VRF_SUB_FUND_AMOUNT = '1000000000000000000000'
 
 module.exports = async function ({ getNamedAccounts, deployments }) {
   const { deploy, log } = deployments
@@ -18,6 +19,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     subscriptionId = transactionReceipt.events[0].args.subId
     // Fund the subsciption
     // Usually, you'd need the link token on a real network
+
     await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, VRF_SUB_FUND_AMOUNT)
   } else {
     vrfCoordinatorV2Address = networkConfig[chainId]['vrfCoordinatorV2']
