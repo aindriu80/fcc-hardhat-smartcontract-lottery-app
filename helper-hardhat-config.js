@@ -26,6 +26,12 @@ const networkConfig = {
     name: 'mainnet',
     keepersUpdateInterval: '30',
   },
+  gasReporter: {
+    enabled: false,
+    currency: 'USD',
+    outputFile: 'gas-report.txt',
+    noColors: true,
+  },
 }
 
 const developmentChains = ['hardhat', 'localhost']
@@ -34,6 +40,5 @@ const VERIFICATION_BLOCK_CONFIRMATIONS = 6
 module.exports = {
   networkConfig,
   developmentChains,
-
   VERIFICATION_BLOCK_CONFIRMATIONS,
 }

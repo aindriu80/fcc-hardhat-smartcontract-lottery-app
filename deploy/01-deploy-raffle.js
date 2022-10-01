@@ -1,21 +1,20 @@
 const { network, ethers } = require('hardhat')
-const { developmentChains, networkConfig } = require('../helper-hardhat-config')
+const { developmentChains,VERIFICATION_BLOCK_CONFIRMATIONS, networkConfig } = require('../helper-hardhat-config')
 const { verify } = require('../utils/verify')
 
-// const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther('29')
-const VRF_SUB_FUND_AMOUNT = '1000000000000000000000'
+const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("1") // 1 ETH or 1^18
 
-module.exports = async function ({ getNamedAccounts, deployments }) {
+module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
   const chainId = network.config.chainId
-  let vrfCoordinatorV2Address, subscriptionId
+    let vrfCoordinatorV2Address, subscriptionId, vrfCoordinatorV2Mock
 
-  if (developmentChains.includes(network.name)) {
-    const vrfCoordinatorV2Mock = await ethers.getContract('VRFCoordinatorV2Mock')
+    if (chainId == 31337) {
+        vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock")
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address
     const transactionResponse = await vrfCoordinatorV2Mock.createSubscription()
-    const transactionReceipt = await transactionResponse.wait(1)
+        const transactionReceipt = await transactionResponse.wait()
     subscriptionId = transactionReceipt.events[0].args.subId
     // Fund the subsciption
     // Usually, you'd need the link token on a real network
@@ -25,13 +24,6 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     vrfCoordinatorV2Address = networkConfig[chainId]['vrfCoordinatorV2']
     subscriptionId = networkConfig[chainId]['subscriptionId']
   }
-
-  // const entranceFee = networkConfig[chainId]['entranceFee']
-  // const gasLane = networkConfig[chainId]['gasLane']
-  // const callbackGasLimit = networkConfig[chainId]['callbackGasLimit']
-  // const interval = networkConfig[chainId]['interval']
-
-  // const args = [vrfCoordinatorV2Address, entranceFee, gasLane, callbackGasLimit, interval]
 
   const waitBlockConfirmations = developmentChains.includes(network.name)
     ? 1
@@ -51,7 +43,6 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     from: deployer,
     args: arguments,
     log: true,
-    // waitConfirmations: network.config.blockConfirmations || 1,
     waitConfirmations: waitBlockConfirmations,
   })
   // Verify the deployment

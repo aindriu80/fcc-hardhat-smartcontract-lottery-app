@@ -40,6 +40,13 @@ module.exports = {
       chainId: 5,
     },
   },
+  gasReporter: {
+    enabled: false,
+    outputFile: 'gas-report.txt',
+    noColors: true,
+    // coinmarketcap: COINMARKETCAP_API_KEY,
+    token: 'ETH',
+  },
   solidity: '0.8.17',
   namedAccounts: {
     deployer: {
