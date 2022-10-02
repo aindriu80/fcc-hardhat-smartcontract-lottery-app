@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const { assert, expect } = require('chai')
 const { getNamedAccounts, developments, ethers } = require('hardhat')
 const { developmentChains, networkConfig } = require('../../helper-hardhat-config')
 
@@ -20,7 +20,13 @@ const { developmentChains, networkConfig } = require('../../helper-hardhat-confi
           const raffleState = await raffle.getRaffleState()
           const interval = await raffle.getInterval()
           assert.equal(raffleState.toString(), '0')
-          // assert.equal(interval.toString(), networkConfig[chainId]['interval'])
+          assert.equal(interval.toString(), networkConfig[chainId]['interval'])
+        })
+      })
+
+      describe('enterRaffle', async function () {
+        it("Reverts when you don't pay enough", async function () {
+          await expect(raffle.enterRaffle()).to.be.revertedWith('Raffle__NotEnoughETHEntered')
         })
       })
     })
