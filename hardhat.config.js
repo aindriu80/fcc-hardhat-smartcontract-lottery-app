@@ -24,12 +24,6 @@ module.exports = {
     localhost: {
       chainId: 31337,
     },
-    rinkeby: {
-      chainId: 4,
-      blockConfirmations: 6,
-      url: RINKEBY_RPC_URL,
-      accounts: [PRIVATE_KEY],
-    },
     goerli: {
       url: GOERLI_RPC_URL,
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
@@ -44,7 +38,7 @@ module.exports = {
     enabled: false,
     outputFile: 'gas-report.txt',
     noColors: true,
-    // coinmarketcap: COINMARKETCAP_API_KEY,
+    coinmarketcap: COINMARKETCAP_API_KEY,
     token: 'ETH',
   },
   solidity: '0.8.17',
