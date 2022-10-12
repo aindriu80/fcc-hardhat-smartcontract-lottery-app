@@ -25,13 +25,10 @@ module.exports = {
       chainId: 31337,
     },
     goerli: {
+      chainId: 5,
       url: GOERLI_RPC_URL,
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
-      //   accounts: {
-      //     mnemonic: MNEMONIC,
-      //   },
       saveDeployments: true,
-      chainId: 5,
     },
   },
   gasReporter: {

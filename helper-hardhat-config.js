@@ -17,7 +17,7 @@ const networkConfig = {
   },
   4: {
     name: 'goerli',
-    subscriptionId: '6926',
+    subscriptionId: '4120',
     gasLane: '0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15',
     keepersUpdateInterval: '30',
     // raffleEntranceFee: '100000000000000000', // 0.1 ETH
