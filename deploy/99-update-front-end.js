@@ -1,7 +1,8 @@
 const { ethers } = require('hardhat')
 const fs = require('fs')
 
-const FRONT_END_LOCATION = '../fcc-nextjs-smartcontract-lottery-app/constants/contractAddress.json'
+const FRONT_END_LOCATION =
+  '../fcc-nextjs-smartcontract-lottery-app/constants/contractAddresses.json'
 
 const FRONT_END_ABI_FILE = '../fcc-nextjs-smartcontract-lottery-app/constants/abi.json'
 module.exports = async function () {
