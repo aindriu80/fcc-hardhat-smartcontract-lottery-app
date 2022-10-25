@@ -149,3 +149,8 @@ dist
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/solidity,yarn
+
+
+artifacts
+artifacts/@chainlink/contracts/
+deployments/localhost/
